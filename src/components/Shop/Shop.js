@@ -11,7 +11,7 @@ const Shop = () => {
     const [cart, setCart] = useState([]);
     const [search, setSearch] = useState('');
     useEffect(() => {
-        fetch('http://localhost:5001/products?search=' + search)
+        fetch('https://sheltered-tundra-61740.herokuapp.com/products?search=' + search)
             .then(res => res.json())
             .then(data => setProducts(data))
     }, [search])
