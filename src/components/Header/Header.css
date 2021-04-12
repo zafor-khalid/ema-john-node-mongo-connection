@@ -18,3 +18,7 @@ nav a{
 nav a:hover{
     background-color: gray;
 }
+.header button{
+    background-color: rgb(121, 29, 29);
+    border-radius: 10px;
+}

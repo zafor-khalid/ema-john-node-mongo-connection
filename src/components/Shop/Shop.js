@@ -9,39 +9,44 @@ import { Link } from 'react-router-dom';
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+    const [search, setSearch] = useState('');
+    useEffect(() => {
+        fetch('http://localhost:5001/products?search=' + search)
+            .then(res => res.json())
+            .then(data => setProducts(data))
+    }, [search])
 
-    useEffect(()=>{
-        fetch('https://sheltered-lowlands-85190.herokuapp.com/products')
-        .then(res => res.json())
-        .then(data => setProducts(data))
-    }, [])
-    
-    useEffect(()=>{
+    useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        fetch('https://sheltered-lowlands-85190.herokuapp.com/productsByKeys', {
+        fetch('https://sheltered-tundra-61740.herokuapp.com/productsByKeys', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(productKeys)
         })
-        .then(res => res.json())
-        .then(data => setCart(data))
+            .then(res => res.json())
+            .then(data => setCart(data))
     }, [])
 
-    const handleAddProduct = (product) =>{
+    const handleSearch = (event) => {
+        setSearch(event.target.value)
+    }
+
+
+    const handleAddProduct = (product) => {
         const toBeAddedKey = product.key;
         const sameProduct = cart.find(pd => pd.key === toBeAddedKey);
         let count = 1;
         let newCart;
-        if(sameProduct){
+        if (sameProduct) {
             count = sameProduct.quantity + 1;
             sameProduct.quantity = count;
             const others = cart.filter(pd => pd.key !== toBeAddedKey);
             newCart = [...others, sameProduct];
         }
-        else{
+        else {
             product.quantity = 1;
             newCart = [...cart, product];
         }
@@ -52,23 +57,29 @@ const Shop = () => {
     return (
         <div className="twin-container">
             <div className="product-container">
+
+                <div className="d-flex justify-content-center my-3">
+                    <input type="text" onChange={handleSearch} className="product-search form-control w-50" placeholder="search item" />
+                </div>
+
+
                 {
-                    products.map(pd => <Product 
+                    products.map(pd => <Product
                         key={pd.key}
                         showAddToCart={true}
-                        handleAddProduct = {handleAddProduct}
+                        handleAddProduct={handleAddProduct}
                         product={pd}
-                        ></Product>)
+                    ></Product>)
                 }
             </div>
             <div className="cart-container">
-               <Cart cart={cart}>
+                <Cart cart={cart}>
                     <Link to="/review">
                         <button className="main-button">Review Order</button>
                     </Link>
-               </Cart>
+                </Cart>
             </div>
-            
+
         </div>
     );
 };

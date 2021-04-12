@@ -7,7 +7,7 @@ const ProductDetail = () => {
     const [product, setProduct] = useState({});
 
     useEffect(() => {
-        fetch('https://sheltered-lowlands-85190.herokuapp.com/product/'+ productKey)
+        fetch('https://sheltered-tundra-61740.herokuapp.com/product/'+ productKey)
         .then(res => res.json())
         .then(data => setProduct(data));
     }, [productKey])

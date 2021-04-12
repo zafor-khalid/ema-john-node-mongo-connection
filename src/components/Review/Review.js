@@ -25,7 +25,7 @@ const Review = () => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
 
-        fetch('https://sheltered-lowlands-85190.herokuapp.com/productsByKeys', {
+        fetch('https://sheltered-tundra-61740.herokuapp.com/productsByKeys', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
